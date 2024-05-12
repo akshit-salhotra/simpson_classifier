@@ -7,8 +7,8 @@ import torch.optim as optim
 from model import ResNet
 from tqdm import tqdm
 
-epoch=10000
-batch=12
+epoch=500
+batch=32
 device='cuda' if torch.cuda.is_available() else 'cpu'
 model_path=None
 weights_dir='weights'
@@ -24,20 +24,25 @@ running_loss=0
 if model_path:
     model.load_state_dict(torch.load(model_path,map_location=device))
     
-for i in tqdm(range(epoch),iterable='epoch',unit='training'):
+for i in tqdm(range(epoch),unit='epoch'):
     model.train()
     epoch_loss=0
-    for images,label in dataloader:
+    for count,data in tqdm(enumerate(dataloader),unit='iteration'):
+        images=data[0]
+        label=data[1]
         images=images.to(device)
         label=label.to(device)
         output=model(images)
         l=criterion(output,label)        
         l=criterion(output,label)
         epoch_loss+=l
+        if count%50==0:
+            print(f'\n[ iteration  :{count} loss  :{l}]')
         l.backward()
         optimizer.step()
         optimizer.zero_grad()
-    running_loss+=epoch_loss
-    print(f'[epoch loss:{epoch_loss}   running loss:{running_loss}]')
-    model.save(model.state_dict(),f'{weights_dir}/Resnet_epoch_{i}_loss:{epoch_loss}')
+        
+    running_loss+=epoch_loss/len(dataset)
+    print(f'[epoch loss:{epoch_loss/len(dataset)}   running loss:{running_loss}]\n')
+    torch.save(model.state_dict(),f'{weights_dir}/Resnet_epoch_{i}_loss:{epoch_loss}')
     

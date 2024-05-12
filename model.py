@@ -8,7 +8,7 @@ class ResNet(nn.Module):
         
         self.conv=nn.Conv2d(3,32,3,padding=1)
         self.conv1=nn.Conv2d(32,32,3,padding=1)
-        self.ReLU=nn.ReLU(inplace=True)
+        self.ReLU=nn.ReLU(inplace=False)
         
         self.down1=nn.Conv2d(32,64,3,stride=2,padding=1)
         self.conv2=nn.Conv2d(64,64,3,padding=1)
