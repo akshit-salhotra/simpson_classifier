@@ -97,6 +97,6 @@ class ResNet(nn.Module):
         
     
 if __name__ =='__main__':
-    device='cuda'
+    device='cuda' if torch.cuda.is_available() else 'cpu'
     model=ResNet(224).to(device)
     summary(model,(3,224,224))
