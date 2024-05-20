@@ -32,7 +32,8 @@ class ResNet(nn.Module):
         self.convRes5=nn.Conv2d(512,1024,1,stride=2)
         
         self.Linear=nn.Linear(1024*(size>>5)**2,1000)
-        self.out=nn.Linear(1000,44)
+        self.full=nn.Linear(1000,1000)
+        self.out=nn.Linear(1000,42)
 
     def forward(self,x):
         
@@ -68,7 +69,7 @@ class ResNet(nn.Module):
         x7=self.conv4(x7)
         x7=self.ReLU(x7)
         x8=self.conv4(x7+self.convRes3(x6))
-        x7=self.ReLU(x7)
+        x8=self.ReLU(x8)
         x8=self.conv4(x8)
         x8=self.ReLU(x8)
         
@@ -91,6 +92,7 @@ class ResNet(nn.Module):
         x12=self.ReLU(x12)
 
         out=self.Linear(torch.flatten(x12,start_dim=1))
+        out=self.full(out)
         out=self.out(out)
         
         return(out)
