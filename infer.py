@@ -9,6 +9,9 @@ import torch.nn as nn
 import os
 import matplotlib.pyplot as plt
 # model=ResNet(224)
+import os
+import matplotlib.pyplot as plt
+# model=ResNet(224)
 #load model
 model_weights='weights/Resnet_epoch_6_loss:24.227733492210973'
 test_path='data/kaggle_simpson_testset/kaggle_simpson_testset'
@@ -40,7 +43,7 @@ for img_path in sorted(os.listdir(test_path)):
     # print(f'output {y-store}')
        
     # store=y
-    print(y)
+    # print(y)
     y=torch.argmax(y)
     print(f'image name : {img_path}')
     print(f'the predicted class is :{y}')
